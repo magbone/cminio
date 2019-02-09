@@ -1,5 +1,5 @@
 {
-  "endpoint": "xxxxxx:9000",
+  "endpoint": "ip:9000",
   "access_key": "your key",
   "secret_key": "your key",
   "secure": "false"

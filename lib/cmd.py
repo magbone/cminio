@@ -11,8 +11,10 @@ class Command:
         parser.add_argument("-r",'--removebucket',help="remove the buckets")
         parser.add_argument("--listobjects",help="list the all objects")
         parser.add_argument("--getbucketpolicy",help="get bucket policy")
-        parser.add_argument("--setbucketpolicy", help="set bucket policy")
+        parser.add_argument("--setbucketpolicy", help="set bucket policy",action='store')
+        parser.add_argument("--bucket",'-b',help="set bucket name")
         parser.add_argument("--getbucketnotification", help="get bucket notification")
+
         args = parser.parse_args()
 
         cminio_operation = operation.Operation()
@@ -36,7 +38,9 @@ class Command:
         elif args.getbucketpolicy:
             cminio_operation.get_bucket_policy(args.getbucketpolicy)
         elif args.setbucketpolicy:
-            #cminio_operation.set_bucket_policy(args.setbucketpolicy)
-            print ""
+            if args.bucket:
+                cminio_operation.set_bucket_policy(args.bucket,args.setbucketpolicy)
+            else:
+                raise Exception("No such argument: --bucket")
         elif args.getbucketnotification:
             cminio_operation.get_bucket_notification(args.getbucketnotification)

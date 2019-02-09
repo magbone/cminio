@@ -1,6 +1,8 @@
 import conf
+import policy
 from minio import Minio
 from minio.error import ResponseError
+
 
 class Operation:
     client = None
@@ -40,9 +42,10 @@ class Operation:
 
     def get_bucket_policy(self,bucket_name):
         policy = self.client.get_bucket_policy(bucket_name=bucket_name)
-        print "cminio: %" % policy
-    def set_bucket_policy(self,bucket_name,policy):
-        print ""
+        print "cminio: %s" % policy
+    def set_bucket_policy(self,bucket_name,path):
+        bucket_policy = policy.Policy()
+        self.client.set_bucket_policy(bucket_name,bucket_policy.policy_from_disk(path))
 
     def get_bucket_notification(self,bucket_name):
         notification = self.client.get_bucket_notification(bucket_name=bucket_name)
