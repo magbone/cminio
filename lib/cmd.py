@@ -1,6 +1,9 @@
 # the console command.
 import argparse
 from lib import operation
+
+import shell
+
 class Command:
 
     def __init__(self):
@@ -14,6 +17,7 @@ class Command:
         parser.add_argument("--setbucketpolicy", help="set bucket policy",action='store')
         parser.add_argument("--bucket",'-b',help="set bucket name")
         parser.add_argument("--getbucketnotification", help="get bucket notification")
+        parser.add_argument("shell",help="connect the remote server as shell")
 
         args = parser.parse_args()
 
@@ -44,3 +48,7 @@ class Command:
                 raise Exception("No such argument: --bucket")
         elif args.getbucketnotification:
             cminio_operation.get_bucket_notification(args.getbucketnotification)
+
+        #shell
+        elif args.shell:
+            shell_cmd = shell.Shell()

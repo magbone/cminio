@@ -42,12 +42,28 @@ class Operation:
 
     def get_bucket_policy(self,bucket_name):
         policy = self.client.get_bucket_policy(bucket_name=bucket_name)
-        print "cminio: %s" % policy
+        print "[%s] policy: %s" % (bucket_name,policy)
     def set_bucket_policy(self,bucket_name,path):
         bucket_policy = policy.Policy()
         self.client.set_bucket_policy(bucket_name,bucket_policy.policy_from_disk(path))
 
     def get_bucket_notification(self,bucket_name):
         notification = self.client.get_bucket_notification(bucket_name=bucket_name)
-        print "cminio: %s" % notification
+        print "[%s] bucket: %s" % (bucket_name,notification)
+
+    def set_bucket_notification(self,bucket_name,notification):
+        try:
+            self.client.set_bucket_notification(bucket_name,notification)
+        except ResponseError as err:
+            print err
+    def remove_all_bucket_notification(self,bucket_name):
+        self.client.remove_all_bucket_notification(bucket_name)
+    def get_object(self,bucket_name,object_name,request_headers=None,output=None):
+        try:
+            data = self.client.get_object(bucket_name,object_name,request_headers=request_headers)
+            with open(output,"wb") as file_data:
+                for d in data.stream(32 * 1024):
+                    file_data.write(d)
+        except ResponseError as err:
+            print err
 
